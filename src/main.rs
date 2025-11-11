@@ -98,7 +98,7 @@ fn main() -> io::Result<()> {
     let filename = if args.len() == 2 {
         &args[1]
     } else if args.len() == 1 {
-        &("sw1.txt".to_owned())
+        &"sw1.txt".to_owned()
     } else {
         eprintln!("usage: swserver [infile.txt]");
         process::exit(1);
