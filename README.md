@@ -9,9 +9,10 @@ amazed! Wonderful!
 I used to send them to
 [towel.blinkenlights.nl](telnet://towel.blinkenlights.nl/), but that
 site seems to have gone down. There's another one at
-[starwarstel.net](telnet://starwarstel.net) that has awesome on-screen
-controls and even works with the mouse, but it's more than I wanted and
-the students' dumb clients had trouble with the telnet protocol.
+[starwarstel.net](https://github.com/gabe565/ascii-movie) that has
+awesome on-screen controls and even works with the mouse, but it's more
+than I wanted and the students' dumb clients had trouble with the telnet
+protocol.
 
 Of course, I could have written this in any language, but I wrote it in
 Rust to learn how it does networking and OS multithreading.
@@ -29,6 +30,14 @@ cargo run              # defaults to sw1.txt
 cargo run sw1.txt      # specifying an ASCIImation file
 ```
 
+Then `telnet` or `netcat` to the server on port 2187.
+
+```
+nc localhost 2187
+```
+
+Enjoy the show!
+
 ## License
 
 The code is released under the [Unlicense](https://unlicense.org/). But
@@ -39,4 +48,4 @@ avoid ambiguity.
 
 * Uses OS threads so it won't scale. Someone will have to make it
   async.
-
+* Probably don't need to collect the command line arguments.
