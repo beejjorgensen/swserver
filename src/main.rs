@@ -4,7 +4,6 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::process;
-use std::sync::Arc;
 use std::{thread, time};
 
 fn consume_input(stream: &mut TcpStream) -> io::Result<()> {
@@ -64,7 +63,7 @@ fn stream_log(msg: &str, stream: &TcpStream) {
     }
 }
 
-fn handle_client(mut stream: TcpStream, filename: Arc<String>) {
+fn handle_client(mut stream: TcpStream, filename: String) {
     stream.set_nonblocking(true).unwrap();
 
     let file = match File::open(&*filename) {
@@ -97,22 +96,21 @@ fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().collect();
 
     let filename = if args.len() == 2 {
-        args[1].clone()
+        &args[1]
     } else if args.len() == 1 {
-        "sw1.txt".to_owned()
+        &("sw1.txt".to_owned())
     } else {
         eprintln!("usage: swserver [infile.txt]");
         process::exit(1);
     };
 
-    let filename = Arc::new(filename);
     let listener = TcpListener::bind("0.0.0.0:2187");
 
     for stream in listener?.incoming() {
         match stream {
             Ok(stream) => {
                 stream_log("new connection", &stream);
-                let filename = Arc::clone(&filename);
+                let filename = filename.clone();
                 thread::spawn(move || handle_client(stream, filename));
             }
             Err(e) => eprintln!("Connection failed: {}", e),
